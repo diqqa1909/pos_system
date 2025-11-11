@@ -10,11 +10,11 @@
             <div class="container-fluid">
             <!--begin::Row-->
             <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Member</h3></div>
+                <div class="col-sm-6"><h3 class="mb-0">Purchase</h3></div>
                 <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Member</li>
+                    <li class="breadcrumb-item active" aria-current="page">Purchase</li>
                 </ol>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Search Member</h3>
+                                <h3 class="card-title">Search Supplier</h3>
                             </div>
                             <form action="" method="GET">
                                 <div class="card-body">
@@ -36,21 +36,21 @@
                                             <label>ID</label>
                                             <input type="text" name="id" value="{{Request()->id}}" placeholder="" class="form-control">
                                         </div>
-                                        <div class="form-group col-md-2">
-                                            <label>Member Code</label>
-                                            <input type="text" name="member_code" value="{{Request()->member_code}}" placeholder="" class="form-control">
+                                        <div class="form-group col-md-3">
+                                            <label>Supplier Name</label>
+                                            <input type="text" name="supplier_name" value="{{Request()->supplier_name}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label>Member Name</label>
-                                            <input type="text" name="member_name" value="{{Request()->member_name}}" placeholder="" class="form-control">
+                                            <label>Total Item</label>
+                                            <input type="text" name="total_item" value="{{Request()->total_item}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label>Address</label>
-                                            <input type="text" name="address" value="{{Request()->address}}" placeholder="" class="form-control">
+                                            <label>Price</label>
+                                            <input type="text" name="price" value="{{Request()->price}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label>Telephone</label>
-                                            <input type="text" name="telephone" value="{{Request()->telephone}}" placeholder="" class="form-control">
+                                            <label>Discount</label>
+                                            <input type="text" name="discount" value="{{Request()->discount}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>Created At</label>
@@ -63,7 +63,7 @@
                                         <div style="clear:both;"></div>
                                         <div class="col-md-12" style="margin-top:15px;">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a href="" class="btn btn-success">Reset</a>
+                                            <a href="{{url('admin/purchase')}}" class="btn btn-success">Reset</a>
                                         </div>
                                     </div>
                                 </div>
@@ -73,11 +73,11 @@
                         @include('_message')
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h3 class="card-title">Members List</h3>
+                                <h3 class="card-title">Purchases List</h3>
                                 <div class="card-tools">
                                     <ul class="pagination pagination-sm float-end">
-                                        <a href="{{url('admin/member/add')}}" class="btn btn-sm btn-primary">
-                                            <i class="fa fa-plus"></i> Add Member
+                                        <a href="{{url('admin/purchase/add')}}" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-plus"></i> Add purchase
 
                                         </a>
                                     </ul>
@@ -88,28 +88,48 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Member Code</th>
-                                            <th>Member Name</th>
-                                            <th>Address</th>
-                                            <th>Telephone</th>
+                                            <th>Supplier Name</th>
+                                            <th>Total Item</th>
+                                            <th>Price</th>
+                                            <th>Discount</th>
+                                            <th>Net Discount</th>
+                                            <th>Total Price</th>
                                             <th>Created At</th>
                                             <th>Updated At</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($members as $value)
+                                        @php
+                                            $totalItem = 0;
+                                            $price = 0;
+                                            $totalDiscount = 0;
+                                            $totalNet = 0;
+                                            $totalP = 0;
+                                        @endphp
+                                        @forelse ($datas as $value)
+                                        @php
+                                            $netDiscount = $value->total_price * $value->discount / 100;
+                                            $totalPrice = $value->total_price - $netDiscount;
+                                            $totalItem += $value->total_item;
+                                            $price += $value->total_price;
+                                            $totalDiscount += $value->discount;
+                                            $totalNet += $netDiscount;
+                                            $totalP += $totalPrice;
+                                        @endphp
                                             <tr>
                                                 <td>{{$value->id}}</td>
-                                                <td>{{$value->member_code}}</td>
-                                                <td>{{$value->member_name}}</td>
-                                                <td>{{$value->address}}</td>
-                                                <td>{{$value->telephone}}</td>
+                                                <td>{{$value->supplier_name}}</td>
+                                                <td>{{$value->total_item}}</td>
+                                                <td>{{$value->total_price}}</td>
+                                                <td>{{$value->discount}}%</td>
+                                                <td>{{$netDiscount}}</td>
+                                                <td>{{$totalPrice}}</td>
                                                 <td>{{date('d-m-Y H:i A', strtotime($value->created_at))}}</td>
                                                 <td>{{date('d-m-Y H:i A', strtotime($value->updated_at))}}</td>
                                                 <td>
-                                                    <a href="{{url('admin/member/edit/'.$value->id)}}" class="btn btn-sm btn-primary">Edit</a>
-                                                    <a data-id="{{$value->id}}" data-url="{{url('admin/member/delete/'.$value->id)}}" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-danger">Delete</a>
+                                                    <a href="{{url('admin/purchase/edit/'.$value->id)}}" class="btn btn-sm btn-primary">Edit</a>
+                                                    <a data-id="{{$value->id}}" data-url="{{url('admin/purchase/delete/'.$value->id)}}" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-danger">Delete</a>
                                                 </td>
                                             </tr>
                                         @empty
@@ -117,10 +137,19 @@
                                                 <td colspan="100%">No records found!</td>
                                             </tr>
                                         @endforelse
+                                        <tr>
+                                            <th colspan="2">Total Sum: </th>
+                                            <td>{{$totalItem}}</td>
+                                            <td>{{$price}}</td>
+                                            <td>{{$totalDiscount}}</td>
+                                            <td>{{$totalNet}}</td>
+                                            <td>{{$totalP}}</td>
+                                            <th colspan="3"></th>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <div style="padding: 10px; float: right;">
-                                    {!! $members->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
+                                    {!! $datas->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
                                 </div>
                             </div>
                         </div>
@@ -139,7 +168,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        Are you sure you want to delete this member? This action cannot be undone.
+        Are you sure you want to delete this purchase? This action cannot be undone.
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

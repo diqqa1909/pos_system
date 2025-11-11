@@ -14,7 +14,7 @@
                 <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Member</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Member</li>
                 </ol>
                 </div>
             </div>
@@ -27,30 +27,31 @@
               <div class="col-12">
                 <div class="card card-primary card-outline mb-4">
                   <div class="card-header"><div class="card-title">Horizontal Form</div></div>
-                  <form method="POST" action="{{url('admin/member/add')}}">
+                  <form method="POST" action="{{url('admin/member/edit/'.$getMember->id)}}">
                     {{csrf_field()}}
                     <div class="card-body">
                       <div class="row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" name="name" id="name" placeholder="Member Name" required />
+                          <input type="text" class="form-control" name="name" id="name" placeholder="Member Name" value="{{$getMember->member_name}}" required />
                         </div>
                       </div>
                       <div class="row mb-3">
                         <label for="address" class="col-sm-2 col-form-label">Address</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" name="address" id="address" type="text" placeholder="Member Address" required></textarea>
+                            <textarea class="form-control" name="address" id="address" type="text" placeholder="Member Address" required>{{$getMember->address}}</textarea>
                         </div>
                       </div>
                       <div class="row mb-3">
                         <label for="tel" class="col-sm-2 col-form-label">Telephone</label>
                         <div class="col-sm-10">
-                          <input type="number" name="tel" class="form-control" id="tel" placeholder="Member Phone" required/>
+                          <input type="number" name="tel" class="form-control" id="tel" value="{{$getMember->telephone}}" placeholder="Member Phone" required/>
                         </div>
                       </div>
                     </div>
                     <div class="card-footer">
-                      <button type="submit" class="btn btn-primary">Add</button>
+                      <button type="submit" class="btn btn-warning">Update</button>
+                      <a href="{{url(('admin/member'))}}" class="btn btn-primary float-end">Cancel</a>
                     </div>
                   </form>
                 </div>

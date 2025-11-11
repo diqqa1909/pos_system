@@ -6,6 +6,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\PurchaseController;
 
 Route::get('/', [AuthController::class, 'login']);
 Route::post('login_post', [AuthController::class, 'login_post']);
@@ -29,7 +32,32 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('admin/member', [MemberController::class, 'index']);
     Route::get('admin/member/add', [MemberController::class, 'add']);
+    Route::post('admin/member/add', [MemberController::class, 'save']);
+    Route::get('admin/member/edit/{id}', [MemberController::class, 'edit']);
+    Route::post('admin/member/edit/{id}', [MemberController::class, 'update']);
+    Route::get('admin/member/delete/{id}', [MemberController::class, 'delete']);
 
+    Route::get('admin/supplier', [SupplierController::class, 'index']);
+    Route::get('admin/supplier/delete/{id}', [SupplierController::class, 'delete']);
+    Route::get('admin/supplier/add/', [SupplierController::class, 'add']);
+    Route::post('admin/supplier/add/', [SupplierController::class, 'store']);
+    Route::get('admin/supplier/edit/{id}', [SupplierController::class, 'edit']);
+    Route::post('admin/supplier/edit/{id}', [SupplierController::class, 'update']);
+    
+    Route::get('admin/expense', [ExpenseController::class, 'index']);
+    Route::get('admin/expense/add', [ExpenseController::class, 'add']);
+    Route::post('admin/expense/add', [ExpenseController::class, 'store']);
+    Route::get('admin/expense/edit/{id}', [ExpenseController::class, 'edit']);
+    Route::post('admin/expense/edit/{id}', [ExpenseController::class, 'update']);
+    Route::get('admin/expense/delete/{id}', [ExpenseController::class, 'delete']);
+
+    Route::get('admin/purchase', [PurchaseController::class, 'index']);
+    Route::get('admin/purchase/add', [PurchaseController::class, 'add']);
+    Route::post('admin/purchase/add', [PurchaseController::class, 'store']); 
+    Route::get('admin/purchase/edit/{id}', [PurchaseController::class, 'edit']); 
+    Route::post('admin/purchase/edit/{id}', [PurchaseController::class, 'update']); 
+    Route::get('admin/purchase/delete/{id}', [PurchaseController::class, 'delete']);
+    
 
 });
 

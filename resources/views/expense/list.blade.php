@@ -2,23 +2,24 @@
 @extends('layouts.app')
 @section('content')
     
-
-    <main class="app-main">
+ <main class="app-main">
         <!--begin::App Content Header-->
         <div class="app-content-header">
-            <!--begin::Container-->
-            <div class="container-fluid">
+          <!--begin::Container-->
+          <div class="container-fluid">
             <!--begin::Row-->
             <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Member</h3></div>
-                <div class="col-sm-6">
+              <div class="col-sm-6"><h3 class="mb-0">Expenses</h3></div>
+              <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Member</li>
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Expenses</li>
                 </ol>
-                </div>
+              </div>
             </div>
-            </div>
+            <!--end::Row-->
+          </div>
+          <!--end::Container-->
         </div>
 
         <div class="app-content">
@@ -37,20 +38,12 @@
                                             <input type="text" name="id" value="{{Request()->id}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label>Member Code</label>
-                                            <input type="text" name="member_code" value="{{Request()->member_code}}" placeholder="" class="form-control">
+                                            <label>Description</label>
+                                            <input type="text" name="description" value="{{Request()->description}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label>Member Name</label>
-                                            <input type="text" name="member_name" value="{{Request()->member_name}}" placeholder="" class="form-control">
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>Address</label>
-                                            <input type="text" name="address" value="{{Request()->address}}" placeholder="" class="form-control">
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>Telephone</label>
-                                            <input type="text" name="telephone" value="{{Request()->telephone}}" placeholder="" class="form-control">
+                                            <label>Amount</label>
+                                            <input type="text" name="amount" value="{{Request()->amount}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>Created At</label>
@@ -63,21 +56,22 @@
                                         <div style="clear:both;"></div>
                                         <div class="col-md-12" style="margin-top:15px;">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a href="" class="btn btn-success">Reset</a>
+                                            <a href="{{url('admin/expense')}}" class="btn btn-success">Reset</a>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <br>
+                        
+                    <br>
                         @include('_message')
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h3 class="card-title">Members List</h3>
+                                <h3 class="card-title">Expenses List</h3>
                                 <div class="card-tools">
                                     <ul class="pagination pagination-sm float-end">
-                                        <a href="{{url('admin/member/add')}}" class="btn btn-sm btn-primary">
-                                            <i class="fa fa-plus"></i> Add Member
+                                        <a href="{{url('admin/expense/add')}}" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-plus"></i> Add Expense
 
                                         </a>
                                     </ul>
@@ -88,28 +82,30 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Member Code</th>
-                                            <th>Member Name</th>
-                                            <th>Address</th>
-                                            <th>Telephone</th>
+                                            <th>Description</th>
+                                            <th>Amount</th>
                                             <th>Created At</th>
                                             <th>Updated At</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($members as $value)
+                                        @php
+                                            $totalAmount = 0;
+                                        @endphp
+                                        @forelse ($getRecord as $value)
+                                            @php
+                                                $totalAmount+=$value->amount;
+                                            @endphp
                                             <tr>
                                                 <td>{{$value->id}}</td>
-                                                <td>{{$value->member_code}}</td>
-                                                <td>{{$value->member_name}}</td>
-                                                <td>{{$value->address}}</td>
-                                                <td>{{$value->telephone}}</td>
+                                                <td>{{$value->description}}</td>
+                                                <td>{{number_format($value->amount,2)}}</td>
                                                 <td>{{date('d-m-Y H:i A', strtotime($value->created_at))}}</td>
                                                 <td>{{date('d-m-Y H:i A', strtotime($value->updated_at))}}</td>
                                                 <td>
-                                                    <a href="{{url('admin/member/edit/'.$value->id)}}" class="btn btn-sm btn-primary">Edit</a>
-                                                    <a data-id="{{$value->id}}" data-url="{{url('admin/member/delete/'.$value->id)}}" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-danger">Delete</a>
+                                                    <a href="{{url('admin/expense/edit/'.$value->id)}}" class="btn btn-sm btn-primary">Edit</a>
+                                                    <a data-id="{{$value->id}}" data-url="{{url('admin/expense/delete/'.$value->id)}}" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-danger">Delete</a>
                                                 </td>
                                             </tr>
                                         @empty
@@ -117,10 +113,19 @@
                                                 <td colspan="100%">No records found!</td>
                                             </tr>
                                         @endforelse
+                                            @if(!@empty($totalAmount))
+                                                <tr>
+                                                    <th colspan="2">Total Amount: </th>
+                                                    <td>{{number_format($totalAmount, 2)}}</td>
+                                                    <th colspan="3"></th>
+                                                </tr>
+                                                
+                                            @endif
+
                                     </tbody>
                                 </table>
                                 <div style="padding: 10px; float: right;">
-                                    {!! $members->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
+                                    {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
                                 </div>
                             </div>
                         </div>
@@ -131,37 +136,37 @@
     </main>
 
     <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirm Delete</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this member? This action cannot be undone.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a id="confirmDelete" href="#" class="btn btn-danger">Delete</a>
-      </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Confirm Delete</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete this member? This action cannot be undone.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a id="confirmDelete" href="#" class="btn btn-danger">Delete</a>
+        </div>
+        </div>
     </div>
-  </div>
-</div>
+    </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function(){
-        const deleteModal = document.getElementById('deleteModal');
-        const confirmModal = document.getElementById('confirmDelete');
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            const deleteModal = document.getElementById('deleteModal');
+            const confirmModal = document.getElementById('confirmDelete');
 
-        deleteModal.addEventListener('show.bs.modal', function(event){
-            const button = event.relatedTarget;
-            const memberId = button.getAttribute('data-id');
-            const deleteUrl = button.getAttribute('data-url');
+            deleteModal.addEventListener('show.bs.modal', function(event){
+                const button = event.relatedTarget;
+                const expenseId = button.getAttribute('data-id');
+                const deleteUrl = button.getAttribute('data-url');
 
-            confirmModal.setAttribute('href', deleteUrl);
+                confirmModal.setAttribute('href', deleteUrl);
+            })
         })
-    })
-</script>
+    </script>
 
 @endsection

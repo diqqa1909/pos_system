@@ -30,8 +30,8 @@
 
             @if(Auth::user()->is_role==1)
 
-              <li class="nav-item menu-open">
-                <a href="{{url('admin/dashboard')}}" class="nav-link active">
+              <li class="nav-item">
+                <a href="{{url('admin/dashboard')}}" class="nav-link @if(Request::segment(2)=='dashboard') active @endif">
                   <i class="nav-icon fa fa-dashboard"></i>
                   <p>
                     Dashboard
@@ -42,7 +42,7 @@
              <li class="nav-header">MASTER</li>
              
              <li class="nav-item">
-               <a href="{{url('admin/category')}}" class="nav-link">
+               <a href="{{url('admin/category')}}" class="nav-link @if(Request::segment(2)=='category') active @endif">
                  <i class="nav-icon fa fa-cube"></i>
                  <p>
                    Category
@@ -51,7 +51,7 @@
               </li>
               
               <li class="nav-item">
-                <a href="{{url('admin/product')}}" class="nav-link">
+                <a href="{{url('admin/product')}}" class="nav-link @if(Request::segment(2)=='product') active @endif">
                   <i class="nav-icon fa fa-cubes"></i>
                   <p>
                     Product
@@ -60,7 +60,7 @@
               </li>
               
               <li class="nav-item">
-                <a href="{{url('admin/member')}}" class="nav-link">
+                <a href="{{url('admin/member')}}" class="nav-link @if(Request::segment(2)=='member') active @endif">
                   <i class="nav-icon fa fa-id-card"></i>
                   <p>
                     Members
@@ -68,10 +68,19 @@
                 </a>
               </li>
 
+              <li class="nav-item">
+                <a href="{{url('admin/supplier')}}" class="nav-link @if(Request::segment(2)=='supplier') active @endif">
+                  <i class="nav-icon fa fa-truck"></i>
+                  <p>
+                    Suppliers
+                  </p>
+                </a>
+              </li>
+
               <li class="nav-header">TRANSACTIONS</li>
               
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{url('admin/expense')}}" class="nav-link">
                   <i class="nav-icon fa fa-adjust"></i>
                   <p>
                     Expenses
@@ -80,7 +89,7 @@
               </li>
               
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{url('admin/purchase')}}" class="nav-link">
                   <i class="nav-icon fa fa-download"></i>
                   <p>
                     Purchase

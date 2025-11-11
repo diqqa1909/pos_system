@@ -3,22 +3,24 @@
 @section('content')
     
 
-    <main class="app-main">
+      <main class="app-main">
         <!--begin::App Content Header-->
         <div class="app-content-header">
-            <!--begin::Container-->
-            <div class="container-fluid">
+          <!--begin::Container-->
+          <div class="container-fluid">
             <!--begin::Row-->
             <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">Member</h3></div>
-                <div class="col-sm-6">
+              <div class="col-sm-6"><h3 class="mb-0">Suppliers</h3></div>
+              <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Member</li>
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Suppliers</li>
                 </ol>
-                </div>
+              </div>
             </div>
-            </div>
+            <!--end::Row-->
+          </div>
+          <!--end::Container-->
         </div>
 
         <div class="app-content">
@@ -27,7 +29,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Search Member</h3>
+                                <h3 class="card-title">Search Supplier</h3>
                             </div>
                             <form action="" method="GET">
                                 <div class="card-body">
@@ -36,21 +38,17 @@
                                             <label>ID</label>
                                             <input type="text" name="id" value="{{Request()->id}}" placeholder="" class="form-control">
                                         </div>
-                                        <div class="form-group col-md-2">
-                                            <label>Member Code</label>
-                                            <input type="text" name="member_code" value="{{Request()->member_code}}" placeholder="" class="form-control">
-                                        </div>
                                         <div class="form-group col-md-3">
-                                            <label>Member Name</label>
-                                            <input type="text" name="member_name" value="{{Request()->member_name}}" placeholder="" class="form-control">
+                                            <label>Supplier Name</label>
+                                            <input type="text" name="supplier_name" value="{{Request()->supplier_name}}" placeholder="" class="form-control">
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label>Address</label>
-                                            <input type="text" name="address" value="{{Request()->address}}" placeholder="" class="form-control">
-                                        </div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-4">
                                             <label>Telephone</label>
-                                            <input type="text" name="telephone" value="{{Request()->telephone}}" placeholder="" class="form-control">
+                                            <input type="text" name="supplier_telephone" value="{{Request()->supplier_telephone}}" placeholder="" class="form-control">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Address</label>
+                                            <input type="text" name="supplier_address" value="{{Request()->supplier_address}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>Created At</label>
@@ -63,7 +61,7 @@
                                         <div style="clear:both;"></div>
                                         <div class="col-md-12" style="margin-top:15px;">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a href="" class="btn btn-success">Reset</a>
+                                            <a href="{{url('admin/supplier')}}" class="btn btn-success">Reset</a>
                                         </div>
                                     </div>
                                 </div>
@@ -73,43 +71,41 @@
                         @include('_message')
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h3 class="card-title">Members List</h3>
+                                <h3 class="card-title">Suppliers List</h3>
                                 <div class="card-tools">
                                     <ul class="pagination pagination-sm float-end">
-                                        <a href="{{url('admin/member/add')}}" class="btn btn-sm btn-primary">
-                                            <i class="fa fa-plus"></i> Add Member
+                                        <a href="{{url('admin/supplier/add')}}" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-plus"></i> Add Supplier
 
                                         </a>
                                     </ul>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered">
+                                <table id="product-table" class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Member Code</th>
-                                            <th>Member Name</th>
-                                            <th>Address</th>
-                                            <th>Telephone</th>
+                                            <th>#</th>
+                                            <th>Supplier Name</th>
+                                            <th>Supplier Telephone</th>
+                                            <th>Supplier Address</th>
                                             <th>Created At</th>
                                             <th>Updated At</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($members as $value)
+                                        @forelse ($getRecords as $value)
                                             <tr>
                                                 <td>{{$value->id}}</td>
-                                                <td>{{$value->member_code}}</td>
-                                                <td>{{$value->member_name}}</td>
-                                                <td>{{$value->address}}</td>
-                                                <td>{{$value->telephone}}</td>
+                                                <td>{{$value->supplier_name}}</td>
+                                                <td>{{$value->supplier_telephone}}</td>
+                                                <td>{{$value->supplier_address}}</td>
                                                 <td>{{date('d-m-Y H:i A', strtotime($value->created_at))}}</td>
                                                 <td>{{date('d-m-Y H:i A', strtotime($value->updated_at))}}</td>
                                                 <td>
-                                                    <a href="{{url('admin/member/edit/'.$value->id)}}" class="btn btn-sm btn-primary">Edit</a>
-                                                    <a data-id="{{$value->id}}" data-url="{{url('admin/member/delete/'.$value->id)}}" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-danger">Delete</a>
+                                                    <a href="{{url('admin/supplier/edit/'.$value->id)}}" class="btn btn-sm btn-primary">Edit</a>
+                                                    <a data-id="{{$value->id}}" data-url="{{url('admin/supplier/delete/'.$value->id)}}" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-danger">Delete</a>
                                                 </td>
                                             </tr>
                                         @empty
@@ -119,8 +115,8 @@
                                         @endforelse
                                     </tbody>
                                 </table>
-                                <div style="padding: 10px; float: right;">
-                                    {!! $members->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
+                                <div style="padding:10px; float:right;">
+                                    {!!$getRecords->appends(Illuminate\Support\Facades\Request::except('page'))->links()!!}
                                 </div>
                             </div>
                         </div>
@@ -128,9 +124,16 @@
                 </div>
             </div>
         </div>
-    </main>
+        
+      </main>
 
-    <!-- Delete Confirmation Modal -->
+
+
+      {{-- model start --}}
+      
+      {{-- model end --}}
+
+     <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -164,4 +167,12 @@
     })
 </script>
 
-@endsection
+
+    <div class="flashMessage alert alert-success" style="display: none;"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+
+    
+        
+        @endsection
