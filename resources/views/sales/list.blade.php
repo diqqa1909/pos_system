@@ -29,7 +29,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Search Supplier</h3>
                             </div>
-                            {{-- <form action="" method="GET">
+                            <form action="" method="GET">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="form-group col-md-1">
@@ -37,20 +37,28 @@
                                             <input type="text" name="id" value="{{Request()->id}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label>Supplier Name</label>
-                                            <input type="text" name="supplier_name" value="{{Request()->supplier_name}}" placeholder="" class="form-control">
+                                            <label>Member Name</label>
+                                            <input type="text" name="member_name" value="{{Request()->member_name}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>Total Item</label>
                                             <input type="text" name="total_item" value="{{Request()->total_item}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label>Price</label>
-                                            <input type="text" name="price" value="{{Request()->price}}" placeholder="" class="form-control">
+                                            <label>Total Price</label>
+                                            <input type="text" name="total_price" value="{{Request()->total_price}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>Discount</label>
                                             <input type="text" name="discount" value="{{Request()->discount}}" placeholder="" class="form-control">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Accepted</label>
+                                            <input type="text" name="accepted" value="{{Request()->accepted}}" placeholder="" class="form-control">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>Username</label>
+                                            <input type="text" name="username" value="{{Request()->username}}" placeholder="" class="form-control">
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label>Created At</label>
@@ -63,11 +71,11 @@
                                         <div style="clear:both;"></div>
                                         <div class="col-md-12" style="margin-top:15px;">
                                             <button class="btn btn-primary" type="submit">Search</button>
-                                            <a href="{{url('admin/purchase')}}" class="btn btn-success">Reset</a>
+                                            <a href="{{url('admin/sales')}}" class="btn btn-success">Reset</a>
                                         </div>
                                     </div>
                                 </div>
-                            </form> --}}
+                            </form>
                         </div>
                         <br>
                         @include('_message')
@@ -80,6 +88,9 @@
                                             <i class="fa fa-plus"></i> Add sales
 
                                         </a>
+                                        <a href="{{url('admin/sales/delete_all')}}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+
+
                                     </ul>
                                 </div>
                             </div>
@@ -113,7 +124,7 @@
                                                 <td>{{date('d-m-Y H:i A', strtotime($value->updated_at))}}</td>
                                                 <td>
                                                     <a href="{{url('admin/sales/edit/'.$value->id)}}" class="btn btn-sm btn-primary">Edit</a>
-                                                    <a data-id="{{$value->id}}" data-url="{{url('admin/purchase/delete/'.$value->id)}}" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-danger">Delete</a>
+                                                    <a data-id="{{$value->id}}" data-url="{{url('admin/sales/delete/'.$value->id)}}" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-sm btn-danger">Delete</a>
                                                 </td>
                                             </tr>
                                         @empty

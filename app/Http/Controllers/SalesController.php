@@ -10,10 +10,35 @@ use Auth;
 
 class SalesController extends Controller{
     public function index(){
-        $data['getRecord'] = SalesModel::select('sales.*', 'member.member_name', 'users.name')
+        $getRecord = SalesModel::select('sales.*', 'member.member_name', 'users.name')
         ->join('member', 'member.member_code', '=', 'sales.member_id')
-        ->join('users', 'users.id', '=', 'sales.user_id')
-        ->get();
+        ->join('users', 'users.id', '=', 'sales.user_id');
+        
+        if(Request()->id != ''){
+            $getRecord = $getRecord->where('sales.id', '=', Request()->id);
+        }
+        if(Request()->member_name != ''){
+            $getRecord = $getRecord->where('member.member_name', '=', Request()->member_name);
+        }
+        if(Request()->total_item != ''){
+            $getRecord = $getRecord->where('sales.total_item', '=', Request()->total_item);
+        }
+        if(Request()->total_price != ''){
+            $getRecord = $getRecord->where('sales.total_price', '=', Request()->total_price);
+        }
+        if(Request()->discount != ''){
+            $getRecord = $getRecord->where('sales.discount', '=', Request()->discount);
+        }
+        if(Request()->accepted != ''){
+            $getRecord = $getRecord->where('sales.accepted', '=', Request()->accepted);
+        }
+        if(Request()->username != ''){
+            $getRecord = $getRecord->where('users.username', '=', Request()->username);
+        }
+
+        $getRecord = $getRecord->get();
+        $data['getRecord'] = $getRecord;
+        
         return view('sales.list', $data);
     }
 
@@ -52,5 +77,16 @@ class SalesController extends Controller{
         $update->user_id = $request->username;
         $update->save();
         return redirect('admin/sales')->with('success', 'Record successfully updated! ');
+    }
+
+    public function delete($id){
+        $delete = SalesModel::find($id);
+        $delete->delete();
+        return redirect('admin/sales')->with('success', 'Record successfully deleted! ');
+    }
+
+    public function delete_all(){
+        SalesModel::truncate();
+        return redirect('admin/sales')->with('success', 'All records successfully deleted! ');
     }
 }
