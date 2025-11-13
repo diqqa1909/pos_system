@@ -9,6 +9,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SalesController;
 
 Route::get('/', [AuthController::class, 'login']);
 Route::post('login_post', [AuthController::class, 'login_post']);
@@ -57,6 +58,12 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('admin/purchase/edit/{id}', [PurchaseController::class, 'edit']); 
     Route::post('admin/purchase/edit/{id}', [PurchaseController::class, 'update']); 
     Route::get('admin/purchase/delete/{id}', [PurchaseController::class, 'delete']);
+    
+    Route::get('admin/sales', [SalesController::class, 'index']);
+    Route::get('admin/sales/add', [SalesController::class, 'add']);
+    Route::post('admin/sales/add', [SalesController::class, 'store']);
+    Route::get('admin/sales/edit/{id}', [SalesController::class, 'edit']);
+    Route::post('admin/sales/edit/{id}', [SalesController::class, 'update']);
     
 
 });

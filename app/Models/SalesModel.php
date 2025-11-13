@@ -5,7 +5,7 @@
     use Illuminate\Database\Eloquent\Model;
     use Request;
 
-    class SupplierModel extends Model{
+    class SalesModel extends Model{
         use HasFactory;
 
         protected $table = 'sales';
